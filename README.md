@@ -41,3 +41,56 @@ Then, add *C:\vcpkg\installed\x64-windows\bin* and *C:\vcpkg\installed\x64-windo
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./2D_feature_tracking`.
+
+### Detectors
+* [Harris](https://docs.opencv.org/3.4/d8/dd8/tutorial_good_features_to_track.html)
+uses the Hessian matrix together with a scoring formula to exclude edges and to detect corner region. 
+* [Shi-Thomasi](https://docs.opencv.org/3.4/d8/dd8/tutorial_good_features_to_track.html)
+has a similar basis as Harris, but the scoring is different.
+* [FAST(Features from Accelerated Segment Test)](https://docs.opencv.org/3.4/df/d74/classcv_1_1FastFeatureDetector.html)
+uses a circle of 16 pixels to classify whether a candidate point is actually a corner. 
+If a set of N contiguous pixels in the circle are all brighter than the intensity of the candidate pixel plus a threshold t or are all darker than the intensity of the candidate pixel p minus the threshold t, p is classified as a vertex. Machine learning is used to accelerate the comparisonn and selection.
+
+* [BRISK (Binary Robust Invariant Scalable Keypoints)](https://docs.opencv.org/3.4/de/dbf/classcv_1_1BRISK.html)
+uses scale-space pyramid layers consisting of typically 4 octaves and 4 intra-octaves. The octaves are formed by progressively half-sampling the original image. The first intra-octave is obtained by downsampling the original image by a factor of 1.5, while the rest of the intra-octave layers are derived by successive halfsasmpling. The keypoint is detected and localized by processing the FAST 9-16 detector scoring on each octave and intra-octave separately. The characteristic direction of each keypoint is user to allow for orientation-normalized descriptors and achieving rotation invariance.
+
+* [ORB (Oriented Fast and Rotated Brief)](https://docs.opencv.org/3.4/d1/d89/tutorial_py_orb.html)
+detector is a modified verion of FAST, which incorporates scale invariance by constructing a scale pyramid.
+* [A-KAZE](https://docs.opencv.org/3.4/db/d70/tutorial_akaze_matching.html)
+uses a scale dimension by applying a nonlinear diffusion filter. It starts at finest level and goes to courser levels by subsampling. The features are detected by calculating the Hessian matrix at each scale level and a subpixel position for the feature is estimated by fitting of a quadratic function to the determinant. 
+* [SIFT (Scale Invariant Feature Transform)](https://docs.opencv.org/3.4/d7/d60/classcv_1_1SIFT.html)
+uses the local extreme points of differences of images convoluted with Gaussian filters at different scales as indicator for keypoint candidates. Keypoints are then taken as maxima/minima of the Difference of Gaussians (DoG) that occur at multiple scales. in this process, edge responses are eliminated using the Hessian matrix.
+
+### Descriptors
+
+#### Binary descriptors requiring Hamming-norm
+* [BRIEF (Binary Robust Independent Elementary Features)](https://docs.opencv.org/3.4/d1/d93/classcv_1_1xfeatures2d_1_1BriefDescriptorExtractor.html)
+creates a binary descriptor by assembling results of comparisons between densities in smoothed version of specifically defined pairs of patches.
+* [BRISK (Binary Robust Invariant Scalable Keypoints)](https://docs.opencv.org/3.4/de/dbf/classcv_1_1BRISK.html)
+descriptor has a pattern for sampling the neighborhood of each keypoint and achieves the formation of the rotation and scale-normalized descriptor by applying rotated sampling pattern. The bit-vector descriptor is assembled by performing all the shortdistance intensity comparisons of point pairs.
+* [ORB (Oriented Fast and Rotated Brief)](https://docs.opencv.org/3.4/d1/d89/tutorial_py_orb.html)
+uses BRIEF together with an orientation compensation mechanism, making it rotation invariant. The rotation compensation mechanism is based on the comparison between the orientation of the corner point, which has been placed in the centroid of the patch.
+
+* [FREAK (Fast Retina Keypoint)](https://docs.opencv.org/3.4/df/db4/classcv_1_1xfeatures2d_1_1FREAK.html)
+uses a circular pattern where the density of points drops when moving away from the center. To provide rotation invariance property, an orientation for the selected patch is computed by summing the local gradients over
+chosen symmetrically located pairs with center as base. Also, in descriptor creation stage, a similar
+approach that was used in ORB is performed, simply the less
+correlated pattern is selected. Generally, the 512 binary tests are
+used in order to obtain maximum performance.
+
+* [A-KAZE](https://docs.opencv.org/3.4/db/d70/tutorial_akaze_matching.html)
+is a binary descriptor which uses a Modified-Local Difference Binary that exploits gradient and intensity information from the nonlinear scale space as defined in the detection step. Therefore, the descriptor can only work with the A-KAZE detector.
+
+#### Descriptors requiring L2-norm
+* [SIFT (Scale Invariant Feature Transform)](https://docs.opencv.org/3.4/d7/d60/classcv_1_1SIFT.html)
+uses histograms to assemble the descriptor vector based on 16 histograms with 8 bins each, resulting in 128 elements.
+The histograms are computed from magnitude and orientation values of samples in a 16×16 region around the keypoint such that each histogram contains samples from a 4×4 subregion of the original neighborhood region. 
+
+### Matcher
+* [Brute Force](https://docs.opencv.org/3.4/d3/da1/classcv_1_1BFMatcher.html)
+* [FLANN (Fast Library for Approximate Nearest Neighbors)](https://docs.opencv.org/3.4/dc/de2/classcv_1_1FlannBasedMatcher.html)
+
+### Selector
+* Best match simply returns the best match between the two sets of key points.
+* k nearest neighbors with (k=2) first returns the two closest points and then selects the keypoint, where the distance ratio is 0.8 or less, i.e. at least 20% closer match than the second candidate.
+
