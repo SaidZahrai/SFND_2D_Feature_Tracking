@@ -50,7 +50,7 @@ int main(int argc, const char *argv[])
     if (argc == 1)
     {
         cout << "You have started the program without any arguments. This is similar to:\n";
-        cout << "\t2D_feature_tracking FAST BRISK MAT_BF SEL_NN TRUE\n";
+        cout << "\t2D_feature_tracking FAST BRISK MAT_BF SEL_NN ON\n";
         cout << "meaning you intend to run 2D_feature_tracking with\n";
         cout << "\tDetector: FAST [HARRIS/SHITOMASI/FAST/ORB/AKAZE/SIFT]\n";
         cout << "\tDescriptor: BRISK [BRIEF/BRISK/FREAK/ORB/AKAZE/SIFT]\n";
@@ -127,7 +127,7 @@ int main(int argc, const char *argv[])
     cout << "*** Start of execution of the command  ";
     for (int i = 0; i < argc; ++i)
         cout << argv[i] << " " ;
-    cout <<  "\n";
+    cout <<  " with OpenCV " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << "." << CV_SUBMINOR_VERSION << "\n";
 
     /* MAIN LOOP OVER ALL IMAGES */
     for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)

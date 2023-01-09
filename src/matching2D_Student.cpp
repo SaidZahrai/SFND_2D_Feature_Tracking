@@ -124,8 +124,11 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
         double sigma = 1.6;
 
         // If you use OpenCV version 4.4 or higher, you should change to this as SIFT is included in the core:
-        // extractor = cv::SiftDescriptorExtractor::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#if (CV_MINOR_VERSION > 4)
+        extractor = cv::SiftDescriptorExtractor::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#else
         extractor = cv::xfeatures2d::SiftDescriptorExtractor::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#endif
     }
     else
     {
@@ -279,8 +282,11 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
         double sigma = 1.6;
 
         // If you use OpenCV version 4.4 or higher, you should change to this as SIFT is included in the core:
-        // detector = cv::SiftFeatureDetector::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#if (CV_MINOR_VERSION > 4)
+        detector = cv::SiftFeatureDetector::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#else
         detector = cv::xfeatures2d::SiftFeatureDetector::create(nfeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma);
+#endif
     }
     else
     {
