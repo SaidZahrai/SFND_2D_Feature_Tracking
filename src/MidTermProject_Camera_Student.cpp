@@ -181,7 +181,7 @@ int main(int argc, const char *argv[])
         {
             detKeypointsModern(keypoints, imgGray, detectorType, t, false);
         }
-        cout << "MP.9.1 " << detectorType << " found " << keypoints.size() << " totally in " << t*1000.0 << " milliseconds" << endl;
+        cout << "MP.9.1 " << detectorType << " found " << keypoints.size() << " in image #" << imgNumber.str()  << " in " << t*1000.0 << " milliseconds" << endl;
 
         //// EOF STUDENT ASSIGNMENT
 
@@ -237,7 +237,7 @@ int main(int argc, const char *argv[])
 
         cv::Mat descriptors;
         descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType, t);
-        cout << "MP.9.2 " << descriptorType << " found " << descriptors.size() << " totally in " << t*1000.0 << " milliseconds" << endl;
+        cout << "MP.9.2 " << descriptorType << " found " << keypoints.size() << " in image #" << imgNumber.str()  << " in " << t*1000.0 << " milliseconds" << endl;
 
         //// EOF STUDENT ASSIGNMENT
 
@@ -284,8 +284,8 @@ int main(int argc, const char *argv[])
             cout << "MP.8 " << detectorType << " " <<  descriptorType << " " <<  matcherType << " " <<  selectorType;
             cout << " found " << matches.size() << " matches in the window in image #" << imgNumber.str() << endl;
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
-            cout << "MP.9.3 " << matcherType << " and " << selectorType << " found " << matches.size() << 
-            " matches in " << t*1000.0 << " milliseconds" << endl;
+            cout << "MP.9.3 " << matcherType << " and " << selectorType << " found " << matches.size() << " in image #" << imgNumber.str()  << " in " 
+            << t*1000.0 << " milliseconds from descriptor " << descriptorType << endl;
 
             // visualize matches between current and previous image
             if (bVis)
