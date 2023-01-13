@@ -19,7 +19,7 @@ and the best three descriptors are
 
 For the specific use in this project, FAST will be the most suitable choice for detector, as it is much faster than the other choices. Consequently, the three best combinations will be
 
-| | Detector | Selector |
+| | Detector | Descriptor |
 | :----: | :----: | :----: |
 | 1 | FAST | BRIEF |
 | 2 | FAST | BRISK |
